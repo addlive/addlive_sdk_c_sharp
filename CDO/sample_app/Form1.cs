@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-using CDO;
+using ADL;
 using System.Security.Cryptography;
 
 namespace sample_app

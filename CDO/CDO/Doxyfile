@@ -1847,6 +1847,6 @@ GENERATE_LEGEND        = YES
 # the various graphs.
 
 DOT_CLEANUP            = YES
-PROJECT_NUMBER = 1.17.0.0 
-OUTPUT_DIRECTORY = C:\Users\tkozak\dev\OSource\c_share_r2\cdo_sdk_c_sharp\CDO\CDO\dist\cloudeo_sdk_C#\apidocs 
-INPUT = C:\Users\tkozak\dev\OSource\c_share_r2\cdo_sdk_c_sharp\CDO\CDO\ 
+PROJECT_NUMBER = 1.19.0.0 
+OUTPUT_DIRECTORY = C:\work\addlive_sdk_c_sharp\CDO\CDO\dist\cloudeo_sdk_C#\apidocs 
+INPUT = C:\work\addlive_sdk_c_sharp\CDO\CDO\ 

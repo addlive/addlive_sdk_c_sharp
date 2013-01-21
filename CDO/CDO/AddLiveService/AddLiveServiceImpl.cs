@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace CDO
+namespace ADL
 {
     /// <summary>
     /// Implementation of the CloudeoService interface
@@ -45,28 +45,27 @@ namespace CDO
         /// Void result callback delegate. Stored as a class member to prevent 
         /// deallocation.
         /// </summary>
-        private cdo_void_rclbck_t _voidRCallback;
+        private adl_void_rclbck_t _voidRCallback;
 
         /// <summary>
         /// String result callback delegate. Stored as a class member to prevent 
         /// deallocation.
         /// </summary>
-        private cdo_string_rclbck_t _stringRCallback;
+        private adl_string_rclbck_t _stringRCallback;
 
         /// <summary>
         /// Int result callback delegate. Stored as a class member to prevent 
         /// deallocation.
         /// </summary>
-        private cdo_int_rclbck_t _intRCallback;
+        private adl_int_rclbck_t _intRCallback;
 
         /// <summary>
         /// Devices result callback delegate. Stored as a class member to prevent 
         /// deallocation.
         /// </summary>
-        private cdo_get_device_names_rclbck_t _devsRCallback;
+        private adl_get_device_names_rclbck_t _devsRCallback;
 
-        private cdo_get_screen_capture_srcs_rclbck_t _screenSourceRCallback;
-        //private cdo_raw_data_rclbck_t _rawScreenSharingSourcesRCallback;
+        private adl_get_screen_capture_srcs_rclbck_t _screenSourceRCallback;
         /// <summary>
         /// List of all registered CloudeoServiceListener adapters. To prevent 
         /// deallocation when passing delegate to the native code.
@@ -103,12 +102,12 @@ namespace CDO
             _renderSupport = new RenderSupport(platformHandle);
 
             // 2. Create all the result delegates.
-            _voidRCallback = new cdo_void_rclbck_t(voidRCallback);
-            _stringRCallback = new cdo_string_rclbck_t(stringRCallback);
-            _intRCallback = new cdo_int_rclbck_t(intRCallback);
-            _devsRCallback = new cdo_get_device_names_rclbck_t(devsRCallback);
+            _voidRCallback = new adl_void_rclbck_t(voidRCallback);
+            _stringRCallback = new adl_string_rclbck_t(stringRCallback);
+            _intRCallback = new adl_int_rclbck_t(intRCallback);
+            _devsRCallback = new adl_get_device_names_rclbck_t(devsRCallback);
             _screenSourceRCallback =
-                new cdo_get_screen_capture_srcs_rclbck_t(screenCaptureSourcesRClbck);
+                new adl_get_screen_capture_srcs_rclbck_t(screenCaptureSourcesRClbck);
         }
 
         #endregion
@@ -124,7 +123,7 @@ namespace CDO
         {
             if (!isPlatformInitialized<string>(responder))
                 return;
-            NativeAPI.cdo_get_version(_stringRCallback,
+            NativeAPI.adl_get_version(_stringRCallback,
             _platformHandle, saveResponder(responder));
         }
 
@@ -132,7 +131,7 @@ namespace CDO
         {
             if (!isPlatformInitialized<object>(responder))
                 return;
-            NativeAPI.cdo_set_application_id(_voidRCallback, _platformHandle,
+            NativeAPI.adl_set_application_id(_voidRCallback, _platformHandle,
                 saveResponder(responder), applicationId);
         }
 
@@ -140,15 +139,15 @@ namespace CDO
 
         /// <inheritdoc />
         public void addServiceListener(Responder<object> responder,
-                                       CloudeoServiceListener listener)
+                                       AddLiveServiceListener listener)
         {
             if (!isPlatformInitialized<object>(responder))
                 return;
 
             NativeServiceListenerAdapter listenerAdapter =
                 new NativeServiceListenerAdapter(listener);
-            CDOServiceListener listenerNative = listenerAdapter.toNative();
-            NativeAPI.cdo_add_service_listener(
+            ADLServiceListener listenerNative = listenerAdapter.toNative();
+            NativeAPI.adl_add_service_listener(
                 _voidRCallback,
                 _platformHandle,
                 saveResponder(responder),
@@ -170,7 +169,7 @@ namespace CDO
             if (!isPlatformInitialized<string>(responder))
                 return;
 
-            NativeAPI.cdo_get_audio_capture_device(
+            NativeAPI.adl_get_audio_capture_device(
                 _stringRCallback, _platformHandle,
                 saveResponder(responder));
         }
@@ -184,7 +183,7 @@ namespace CDO
             if (!isPlatformInitialized<Dictionary<string, string>>(responder))
                 return;
 
-            NativeAPI.cdo_get_audio_capture_device_names(
+            NativeAPI.adl_get_audio_capture_device_names(
                 _devsRCallback,
                 _platformHandle,
                 saveResponder(responder));
@@ -199,8 +198,8 @@ namespace CDO
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            CDOString devId = StringHelper.toNative(deviceId);
-            NativeAPI.cdo_set_audio_capture_device(
+            ADLString devId = StringHelper.toNative(deviceId);
+            NativeAPI.adl_set_audio_capture_device(
                 _voidRCallback,
                 _platformHandle,
                 saveResponder(responder),
@@ -221,7 +220,7 @@ namespace CDO
             if (!isPlatformInitialized<string>(responder))
                 return;
 
-            NativeAPI.cdo_get_audio_output_device(
+            NativeAPI.adl_get_audio_output_device(
                 _stringRCallback,
                 _platformHandle,
                 saveResponder(responder));
@@ -236,7 +235,7 @@ namespace CDO
             if (!isPlatformInitialized<Dictionary<string, string>>(responder))
                 return;
 
-            NativeAPI.cdo_get_audio_output_device_names(
+            NativeAPI.adl_get_audio_output_device_names(
                 _devsRCallback,
                 _platformHandle,
                 saveResponder(responder));
@@ -251,8 +250,8 @@ namespace CDO
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            CDOString devId = StringHelper.toNative(deviceId);
-            NativeAPI.cdo_set_audio_output_device(
+            ADLString devId = StringHelper.toNative(deviceId);
+            NativeAPI.adl_set_audio_output_device(
                 _voidRCallback, _platformHandle,
                 saveResponder(responder), ref devId);
         }
@@ -271,7 +270,7 @@ namespace CDO
             if (!isPlatformInitialized<string>(responder))
                 return;
 
-            NativeAPI.cdo_get_video_capture_device(
+            NativeAPI.adl_get_video_capture_device(
                 _stringRCallback, _platformHandle,
                 saveResponder(responder));
         }
@@ -285,7 +284,7 @@ namespace CDO
             if (!isPlatformInitialized<Dictionary<string, string>>(responder))
                 return;
 
-            NativeAPI.cdo_get_video_capture_device_names(
+            NativeAPI.adl_get_video_capture_device_names(
                 _devsRCallback, _platformHandle,
                 saveResponder(responder));
         }
@@ -299,8 +298,8 @@ namespace CDO
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            CDOString devId = StringHelper.toNative(deviceId);
-            NativeAPI.cdo_set_video_capture_device(
+            ADLString devId = StringHelper.toNative(deviceId);
+            NativeAPI.adl_set_video_capture_device(
                 _voidRCallback, _platformHandle,
                 saveResponder(responder), ref devId);
         }
@@ -316,7 +315,7 @@ namespace CDO
             if (!isPlatformInitialized<List<ScreenCaptureSource>>(responder))
                 return;
             Console.Error.WriteLine("Getting the screen sharing sources");
-            NativeAPI.cdo_get_screen_capture_sources(_screenSourceRCallback,
+            NativeAPI.adl_get_screen_capture_sources(_screenSourceRCallback,
                 _platformHandle, saveResponder(responder), thumbWidth);
         }
 
@@ -332,7 +331,7 @@ namespace CDO
             if (!isPlatformInitialized<string>(responder))
                 return;
 
-            NativeAPI.cdo_start_local_video(
+            NativeAPI.adl_start_local_video(
                 _stringRCallback, _platformHandle,
                 saveResponder(responder));
         }
@@ -345,7 +344,7 @@ namespace CDO
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            NativeAPI.cdo_stop_local_video(
+            NativeAPI.adl_stop_local_video(
                 _voidRCallback, _platformHandle,
                 saveResponder(responder));
         }
@@ -365,9 +364,9 @@ namespace CDO
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            CDOString connDescriptorString =
+            ADLString connDescriptorString =
                 StringHelper.toNative(connDescription.toJSON());
-            NativeAPI.cdo_connect_string(
+            NativeAPI.adl_connect_string(
                 _voidRCallback,
                 _platformHandle,
                 saveResponder(responder),
@@ -382,8 +381,8 @@ namespace CDO
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            CDOString scpId = StringHelper.toNative(scopeId);
-            NativeAPI.cdo_disconnect(_voidRCallback,
+            ADLString scpId = StringHelper.toNative(scopeId);
+            NativeAPI.adl_disconnect(_voidRCallback,
                 _platformHandle, saveResponder(responder),
                 ref scpId);
         }
@@ -397,12 +396,12 @@ namespace CDO
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            CDOString scpId = StringHelper.toNative(scopeId);
-            CDOString mediaTp =
+            ADLString scpId = StringHelper.toNative(scopeId);
+            ADLString mediaTp =
                 StringHelper.toNative(mediaType.StringValue);
-            CDOMediaPublishOptions mediaPublishOpts =
+            ADLMediaPublishOptions mediaPublishOpts =
                 MediaPublishOptions.toNative(options);
-            NativeAPI.cdo_publish(_voidRCallback,
+            NativeAPI.adl_publish(_voidRCallback,
                 _platformHandle, saveResponder(responder),
                 ref scpId, ref mediaTp, ref mediaPublishOpts);
         }
@@ -416,10 +415,10 @@ namespace CDO
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            CDOString scpId = StringHelper.toNative(scopeId);
-            CDOString mediaTp =
+            ADLString scpId = StringHelper.toNative(scopeId);
+            ADLString mediaTp =
                 StringHelper.toNative(mediaType.StringValue);
-            NativeAPI.cdo_unpublish(_voidRCallback,
+            NativeAPI.adl_unpublish(_voidRCallback,
                 _platformHandle, saveResponder(responder),
                 ref scpId, ref mediaTp);
         }
@@ -433,10 +432,10 @@ namespace CDO
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            CDOString scpId = StringHelper.toNative(scopeId);
+            ADLString scpId = StringHelper.toNative(scopeId);
             UIntPtr msgSz =
                 new UIntPtr((message != null) ? (uint)message.Length : 0u);
-            NativeAPI.cdo_send_message(_voidRCallback,
+            NativeAPI.adl_send_message(_voidRCallback,
                 _platformHandle, saveResponder(responder),
                 ref scpId, message, msgSz, ref targetUserId);
         }
@@ -458,7 +457,7 @@ namespace CDO
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            NativeAPI.cdo_monitor_mic_activity(_voidRCallback, _platformHandle,
+            NativeAPI.adl_monitor_mic_activity(_voidRCallback, _platformHandle,
                 saveResponder(responder), enabled);
         }
 
@@ -470,7 +469,7 @@ namespace CDO
             if (!isPlatformInitialized<int>(responder))
                 return;
 
-            NativeAPI.cdo_get_volume(_intRCallback,
+            NativeAPI.adl_get_volume(_intRCallback,
                 _platformHandle, saveResponder(responder));
         }
 
@@ -482,7 +481,7 @@ namespace CDO
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            NativeAPI.cdo_set_volume(_voidRCallback,
+            NativeAPI.adl_set_volume(_voidRCallback,
                 _platformHandle, saveResponder(responder), volume);
         }
 
@@ -501,8 +500,8 @@ namespace CDO
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            CDOString nScopeId = StringHelper.toNative(scopeId);
-            NativeAPI.cdo_start_measuring_stats(_voidRCallback, _platformHandle,
+            ADLString nScopeId = StringHelper.toNative(scopeId);
+            NativeAPI.adl_start_measuring_stats(_voidRCallback, _platformHandle,
                 saveResponder(responder), ref nScopeId, interval);
         }
 
@@ -515,8 +514,8 @@ namespace CDO
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            CDOString nScopeId = StringHelper.toNative(scopeId);
-            NativeAPI.cdo_stop_measuring_stats(_voidRCallback, _platformHandle,
+            ADLString nScopeId = StringHelper.toNative(scopeId);
+            NativeAPI.adl_stop_measuring_stats(_voidRCallback, _platformHandle,
                 saveResponder(responder), ref nScopeId);
         }
 
@@ -527,7 +526,7 @@ namespace CDO
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            NativeAPI.cdo_start_playing_test_sound(
+            NativeAPI.adl_start_playing_test_sound(
                 _voidRCallback,
                 _platformHandle,
                 saveResponder(responder));
@@ -539,7 +538,7 @@ namespace CDO
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            NativeAPI.cdo_stop_playing_test_sound(
+            NativeAPI.adl_stop_playing_test_sound(
                 _voidRCallback, _platformHandle,
                 saveResponder(responder));
         }
@@ -575,8 +574,8 @@ namespace CDO
         public void sendEchoNotification(Responder<object> responder,
                                          string content)
         {
-            CDOString cont = StringHelper.toNative(content);
-            NativeAPI.cdo_send_echo_notification(
+            ADLString cont = StringHelper.toNative(content);
+            NativeAPI.adl_send_echo_notification(
                 _voidRCallback, _platformHandle,
                 saveResponder(responder), ref cont);
         }
@@ -636,7 +635,7 @@ namespace CDO
         /// </summary>
         /// <param name="opaque"></param>
         /// <param name="error"></param>
-        private void voidRCallback(IntPtr opaque, ref CDOError error)
+        private void voidRCallback(IntPtr opaque, ref ADLError error)
         {
             Responder<object> responder = (Responder<object>)getResponder(
                 (uint)opaque);
@@ -660,8 +659,8 @@ namespace CDO
         /// <param name="error"></param>
         /// <param name="str"></param>
         private void stringRCallback(IntPtr opaque,
-            ref CDOError error,
-            ref CDOString str)
+            ref ADLError error,
+            ref ADLString str)
         {
             Responder<string> responder = (Responder<string>)getResponder(
                 (uint)opaque);
@@ -687,7 +686,7 @@ namespace CDO
         /// <param name="error"></param>
         /// <param name="i"></param>
         private void intRCallback(IntPtr opaque,
-            ref CDOError error, int i)
+            ref ADLError error, int i)
         {
             Responder<int> responder =
                 (Responder<int>)getResponder((uint)opaque);
@@ -712,7 +711,7 @@ namespace CDO
         /// <param name="device"></param>
         /// <param name="size_t"></param>
         private void devsRCallback(IntPtr opaque,
-            ref CDOError error, IntPtr device, UIntPtr size)
+            ref ADLError error, IntPtr device, UIntPtr size)
         {
             try 
             {
@@ -727,12 +726,12 @@ namespace CDO
                 // 'device' is an array of 'CDODevice' structures, add devices to
                 // devList
                 var arrayValue = device;
-                var tableEntrySize = Marshal.SizeOf(typeof(CDODevice));
+                var tableEntrySize = Marshal.SizeOf(typeof(ADLDevice));
                 uint tableSize = (uint)size;
                 for (var i = 0; i < tableSize; i++)
                 {
-                    var cur = (CDODevice)Marshal.PtrToStructure(
-                        arrayValue, typeof(CDODevice));
+                    var cur = (ADLDevice)Marshal.PtrToStructure(
+                        arrayValue, typeof(ADLDevice));
                     devList.Add(cur.id.body, cur.label.body);
                     arrayValue = new IntPtr(arrayValue.ToInt32() + tableEntrySize);
                 }
@@ -749,7 +748,7 @@ namespace CDO
         }
 
         private void screenCaptureSourcesRClbck(IntPtr opaque,
-            ref CDOError error, IntPtr sources, UIntPtr size)
+            ref ADLError error, IntPtr sources, UIntPtr size)
         {
             try
             {
@@ -765,14 +764,14 @@ namespace CDO
                     new List<ScreenCaptureSource>();
 
                 var arrayValue = sources;
-                var tableEntrySize = Marshal.SizeOf(typeof(CDOScreenCaptureSource));
+                var tableEntrySize = Marshal.SizeOf(typeof(ADLScreenCaptureSource));
                 uint tableSize = (uint)size;
             
                 for (var i = 0; i < tableSize; i++)
                 {
-                    CDOScreenCaptureSource cur =
-                        (CDOScreenCaptureSource)Marshal.PtrToStructure(
-                        arrayValue, typeof(CDOScreenCaptureSource));
+                    ADLScreenCaptureSource cur =
+                        (ADLScreenCaptureSource)Marshal.PtrToStructure(
+                        arrayValue, typeof(ADLScreenCaptureSource));
                     byte[] snapshotArrayData = new byte[(uint)cur.imageDataLen];
                     Marshal.Copy(cur.imageData, snapshotArrayData, 0, (int)(uint)cur.imageDataLen);
                     sourcesList.Add(
@@ -791,7 +790,7 @@ namespace CDO
         {
             if (_platformHandle == IntPtr.Zero)
             {
-                responder.errHandler(CDO.ErrorCodes.Logic.INVALID_STATE, "Platform already disposed");
+                responder.errHandler(ADl.ErrorCodes.Logic.INVALID_STATE, "Platform already disposed");
                 return false;
             }
             return true;

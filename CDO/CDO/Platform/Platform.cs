@@ -14,7 +14,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-namespace CDO
+
+namespace ADL
 {
 
     /// <summary>
@@ -47,9 +48,9 @@ namespace CDO
          */
 
         /// <summary>
-        /// Default directory where the Cloudeo Native SDK should be available
+        /// Default directory where the AddLive Native SDK should be available
         /// </summary
-        private const string DEFAULT_SDK_PATH = "cloudeo_sdk";
+        private const string DEFAULT_SDK_PATH = "AddLive_sdk-win";
 
         
         /// <summary>
@@ -68,7 +69,7 @@ namespace CDO
         /// Initialization complete delegate - to prevent delegate
         /// dealocation before complete.
         /// </summary>
-        private static cdo_platform_init_done_clbck _onInitComplete;
+        private static adl_platform_init_done_clbck _onInitComplete;
 
         private static CloudeoService _service;
 
@@ -133,29 +134,31 @@ namespace CDO
             _listener = listener;
             
             //Perform platform initialization
-            string path;
+            string sdkPath;
             if (options != null)
             {
                 if (Path.IsPathRooted(options.sdkPath))
                 {
-                    path = options.sdkPath;
+                    sdkPath = options.sdkPath;
                 }
                 else
                 {
-                    path = AssemblyDirectory + options.sdkPath;                       
+                    sdkPath = Path.Combine(AssemblyDirectory, options.sdkPath);
                 }
             }
             else
             {
-                path = AssemblyDirectory + "\\" + DEFAULT_SDK_PATH;
+                sdkPath = Path.Combine(AssemblyDirectory, DEFAULT_SDK_PATH);
             }
-            SetDllDirectory(path);
-            CDOString str = new CDOString();
-            str.body = path;
-            str.length = (UInt32)path.Length;
 
-            CDOInitOptions initOptions = new CDOInitOptions();
-            initOptions.logicLibPath = str;
+            SetDllDirectory(sdkPath);
+
+            ADLString logicLibPath = new ADLString();
+            logicLibPath.body = Path.Combine(sdkPath, "libs");
+            logicLibPath.length = (UInt32)sdkPath.Length;
+
+            ADLInitOptions initOptions = new ADLInitOptions();
+            initOptions.logicLibPath = logicLibPath;
             doInit(initOptions);
         }
 
@@ -172,7 +175,7 @@ namespace CDO
             // notify service that the platform was disposed so all dangling 
             // references does not crash.
             ((CloudeoServiceImpl)_service).platformDisposed();
-            NativeAPI.cdo_release_platform(_platformHandle);
+            NativeAPI.adl_release_platform(_platformHandle);
             _platformHandle = IntPtr.Zero;
             // release the service to deallocate it.
             _service = null;
@@ -277,10 +280,10 @@ namespace CDO
         /// 
         /// </summary>
         /// <param name="options"></param>
-        private static void doInit(CDOInitOptions options)
+        private static void doInit(ADLInitOptions options)
         {
-            _onInitComplete = new cdo_platform_init_done_clbck(onInitComplete);
-            NativeAPI.cdo_init_platform(_onInitComplete, ref options,
+            _onInitComplete = new adl_platform_init_done_clbck(onInitComplete);
+            NativeAPI.adl_init_platform(_onInitComplete, ref options,
                 IntPtr.Zero);
         }
 
@@ -291,7 +294,7 @@ namespace CDO
         /// <param name="err"></param>
         /// <param name="h"></param>
         private static void onInitComplete(IntPtr ptr,
-            ref CDOError err, IntPtr h)
+            ref ADLError err, IntPtr h)
         {
             InitStateChangedEvent.InitState state;
             if (err.err_code == 0)
@@ -317,7 +320,7 @@ namespace CDO
         /// </summary>
         /// <param name="ptr"></param>
         /// <param name="sh"></param>
-        private static void cdo_platform_init_progress_callback(IntPtr ptr,
+        private static void adl_platform_init_progress_callback(IntPtr ptr,
             short sh)
         {
             if (_listener != null)

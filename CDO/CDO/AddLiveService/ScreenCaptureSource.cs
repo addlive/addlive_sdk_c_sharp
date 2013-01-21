@@ -13,7 +13,7 @@ using System.Text;
 using System.Drawing;
 using System.IO;
 
-namespace CDO
+namespace ADL
 {
     public class ScreenCaptureSource
     {

@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace CDO
+namespace ADL
 {
     public delegate void InvaldateHandler(object sender, EventArgs args);
 
@@ -45,7 +45,7 @@ namespace CDO
         /// <summary>
         /// 
         /// </summary>
-        private cdo_void_rclbck_t _stopRHandler;
+        private adl_void_rclbck_t _stopRHandler;
 
         internal ManualRenderer(IntPtr platformHandle,
             PreDisposeHandlerDelegate preDisposeDelegate)
@@ -64,10 +64,10 @@ namespace CDO
 
         public void draw(DrawRequest r)
         {
-            CDODrawRequest nativeR = r.toNative();
+            ADLDrawRequest nativeR = r.toNative();
             nativeR.rendererId = _rendererId;
             nativeR.windowHandle = r.hdc;
-            NativeAPI.cdo_draw(_platformHandle, ref nativeR);
+            NativeAPI.adl_draw(_platformHandle, ref nativeR);
         }
 
         /// <summary>
@@ -81,8 +81,8 @@ namespace CDO
                 return;
             }
             stoppedEvent = new ManualResetEvent(false);
-            _stopRHandler = new cdo_void_rclbck_t(stopRHandler);
-            NativeAPI.cdo_stop_render(_stopRHandler, _platformHandle,
+            _stopRHandler = new adl_void_rclbck_t(stopRHandler);
+            NativeAPI.adl_stop_render(_stopRHandler, _platformHandle,
                 IntPtr.Zero, _rendererId);
             stoppedEvent.WaitOne(2000);
             if (runPreDisposeDelegate)
@@ -95,7 +95,7 @@ namespace CDO
         /// </summary>
         /// <param name="opaque"></param>
         /// <param name="error"></param>
-        private void stopRHandler(IntPtr opaque, ref CDOError error)
+        private void stopRHandler(IntPtr opaque, ref ADLError error)
         {
             stoppedEvent.Set();
         }

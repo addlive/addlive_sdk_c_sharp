@@ -10,12 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CDO;
-namespace CDOTest
-{
+using ADL;
 using NUnit.Framework;
 using System.Threading;
 
+
+namespace ADLTest
+{
     [TestFixture]
     public class PlatformTest
     {

@@ -7,7 +7,8 @@
  */
 
 using System;
-namespace CDO
+
+namespace ADL
 {
     /// <summary>
     /// 

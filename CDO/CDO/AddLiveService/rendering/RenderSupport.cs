@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CDO
+namespace ADL
 {
     class RenderSupport
     {
@@ -45,7 +45,7 @@ namespace CDO
         /// <summary>
         /// 
         /// </summary>
-        private cdo_int_rclbck_t _renderResponder;
+        private adl_int_rclbck_t _renderResponder;
 
         #endregion
 
@@ -62,7 +62,7 @@ namespace CDO
         public RenderSupport(IntPtr platformHandle)
         {
             _pendingCalls = new Dictionary<int, PendingCall>();
-            _renderResponder = new cdo_int_rclbck_t(renderResponder);
+            _renderResponder = new adl_int_rclbck_t(renderResponder);
             _callIdGenerator = 0;
             _platformHandle = platformHandle;
             _activeRenderers = new Dictionary<int, WeakReference>();
@@ -126,10 +126,10 @@ namespace CDO
             ManualRenderer renderer = new ManualRenderer(_platformHandle, onRendererPreDispose);
             call.manualRenderer = renderer;
             _pendingCalls[callId] = call;
-            CDORenderRequest nReq = RenderOptions.toNative(options);
+            ADLRenderRequest nReq = RenderOptions.toNative(options);
             nReq.invalidateCallback = renderer.getInvalidateClbck();
             Console.Error.WriteLine("Requesting SDK to start rendering sink");
-            NativeAPI.cdo_render_sink(_renderResponder, _platformHandle,
+            NativeAPI.adl_render_sink(_renderResponder, _platformHandle,
                 new IntPtr(callId), ref nReq);
         }
 
@@ -139,7 +139,7 @@ namespace CDO
         /// <param name="opaque"></param>
         /// <param name="error"></param>
         /// <param name="i"></param>
-        private void renderResponder(IntPtr opaque, ref CDOError error, int i)
+        private void renderResponder(IntPtr opaque, ref ADLError error, int i)
         {
             try
             {

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CDO
+namespace ADL
 {
     public sealed class MediaType
     {

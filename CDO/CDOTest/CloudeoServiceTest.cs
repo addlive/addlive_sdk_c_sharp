@@ -11,12 +11,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using CDO;
+using ADL;
 using System.Threading;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace CDOTest
+namespace ADLTest
 {
     [TestFixture]
     class CloudeoServiceTest : AbstractCloudeoServiceTest

@@ -10,12 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CDO;
-namespace CDOTest
+using ADL;
+
+namespace ADLTest
 {
     using System.Threading;
 
-    class InitListener : CDO.PlatformInitListener
+    class InitListener : ADL.PlatformInitListener
     {
 
         public InitListener(CountdownLatch latch)

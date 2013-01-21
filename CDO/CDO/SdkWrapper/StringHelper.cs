@@ -6,13 +6,13 @@
  * Released under the BSD license.
  */
 
-namespace CDO
+namespace ADL
 {
     internal static class StringHelper
     {
-        internal static CDOString toNative(string s)
+        internal static ADLString toNative(string s)
         {
-            CDOString result = new CDOString();
+            ADLString result = new ADLString();
             if (s != null)
             {
                 result.body = s;
@@ -21,7 +21,7 @@ namespace CDO
             return result;
         }
 
-        internal static string fromNative(CDOString cdos)
+        internal static string fromNative(ADLString cdos)
         {
             return cdos.body;
         }

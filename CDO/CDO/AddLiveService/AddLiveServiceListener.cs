@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CDO
+namespace ADL
 {
     public class ConnectionLostEvent :EventArgs
     {
@@ -21,7 +21,7 @@ namespace CDO
         public string ErrMessage { get { return _errMessage; } }
 
         internal static ConnectionLostEvent FromNative(
-            CDOConnectionLostEvent connLostEvnt)
+            ADLConnectionLostEvent connLostEvnt)
         {
             ConnectionLostEvent result = new ConnectionLostEvent();
             result._scopeId = connLostEvnt.scopeId.body;
@@ -43,7 +43,7 @@ namespace CDO
         public bool AudioOut { get { return _audioOut; } }
 
         internal static DeviceListChangedEvent FromNative(
-            CDODeviceListChangedEvent devListChangedEvnt)
+            ADLDeviceListChangedEvent devListChangedEvnt)
         {
             DeviceListChangedEvent result = new DeviceListChangedEvent();
             result._audioIn = devListChangedEvnt.audioIn;
@@ -65,7 +65,7 @@ namespace CDO
         public ConnectionType ConnType { get { return _connType; } }
 
         internal static MediaConnTypeChangedEvent FromNative(
-            CDOMediaConnTypeChangedEvent mediaConnTypeChangedEvnt)
+            ADLMediaConnTypeChangedEvent mediaConnTypeChangedEvnt)
         {
             MediaConnTypeChangedEvent result = new MediaConnTypeChangedEvent();
             result._scopeId = mediaConnTypeChangedEvnt.scopeId.body;
@@ -79,7 +79,7 @@ namespace CDO
 
     public class MediaStats
     {
-        private CDOMediaStats _stats;
+        private ADLMediaStats _stats;
 
         public float avgJitter { get {return _stats.avgJitter; }}
             public float avOffset{ get {return _stats.avOffset; }}
@@ -98,7 +98,7 @@ namespace CDO
             public float totalLoss{ get {return _stats.totalLoss; }}
             
 
-        internal MediaStats(CDOMediaStats stats)
+        internal MediaStats(ADLMediaStats stats)
         {
             _stats = stats;
         }
@@ -118,7 +118,7 @@ namespace CDO
         public MediaStats Stats { get { return _stats; } }
 
         internal static MediaStatsEvent FromNative(
-            CDOMediaStatsEvent mediaStatsEvnt)
+            ADLMediaStatsEvent mediaStatsEvnt)
         {
             MediaStatsEvent result = new MediaStatsEvent();
             result._scopeId = mediaStatsEvnt.scopeId.body;
@@ -139,7 +139,7 @@ namespace CDO
         public long SrcUserId { get { return _srcUserId; } }
         public string Data { get { return _data; } }
 
-        internal static MessageEvent FromNative(CDOMessageEvent messageEvnt)
+        internal static MessageEvent FromNative(ADLMessageEvent messageEvnt)
         {
             MessageEvent result = new MessageEvent();
             result._srcUserId = messageEvnt.srcUserId;
@@ -156,7 +156,7 @@ namespace CDO
         public int Activity { get { return _activity; } }
 
         internal static MicActivityEvent FromNative(
-            CDOMicActivityEvent micActivityEvnt)
+            ADLMicActivityEvent micActivityEvnt)
         {
             MicActivityEvent result = new MicActivityEvent();
             result._activity = micActivityEvnt.activity;
@@ -171,7 +171,7 @@ namespace CDO
 
         public int Gain { get { return _gain; } }
 
-        internal static MicGainEvent FromNative(CDOMicGainEvent micGainEvnt)
+        internal static MicGainEvent FromNative(ADLMicGainEvent micGainEvnt)
         {
             MicGainEvent result = new MicGainEvent();
             result._gain = micGainEvnt.gain;
@@ -191,7 +191,7 @@ namespace CDO
         public int Height { get { return _height; } }
 
         internal static VideoFrameSizeChangedEvent FromNative(
-            CDOVideoFrameSizeChangedEvent vidFrameSizeChangedEvent)
+            ADLVideoFrameSizeChangedEvent vidFrameSizeChangedEvent)
         {
             VideoFrameSizeChangedEvent result =
                 new VideoFrameSizeChangedEvent();
@@ -235,7 +235,7 @@ namespace CDO
         public string VideoSinkId { get { return _videoSinkId; } }
 
         internal static UserStateChangedEvent FromNative(
-            CDOUserStateChangedEvent userStateChangedEvnt)
+            ADLUserStateChangedEvent userStateChangedEvnt)
         {
             UserStateChangedEvent result = new UserStateChangedEvent();
             result._scopeId = userStateChangedEvnt.scopeId.body;
@@ -257,7 +257,7 @@ namespace CDO
     {
         private string _echoValue;
 
-        internal static EchoEvent FromNative(CDOEchoEvent nEvent)
+        internal static EchoEvent FromNative(ADLEchoEvent nEvent)
         {
             EchoEvent e = new EchoEvent();
             e._echoValue = StringHelper.fromNative(nEvent.echoValue);
@@ -269,7 +269,7 @@ namespace CDO
 
     }
 
-    public interface CloudeoServiceListener
+    public interface AddLiveServiceListener
     {
         void onConnectionLost(ConnectionLostEvent e);
         void onDeviceListChanged(DeviceListChangedEvent e);
@@ -285,7 +285,7 @@ namespace CDO
     }
 
 
-    public class CloudeoServiceListenerAdapter:CloudeoServiceListener
+    public class AddLiveServiceListenerAdapter: AddLiveServiceListener
     {
         public virtual void onConnectionLost(ConnectionLostEvent e) { }
         public virtual void onDeviceListChanged(DeviceListChangedEvent e) { }
@@ -303,7 +303,7 @@ namespace CDO
         public virtual void onEchoEvent(EchoEvent e) { }
     }
 
-    public class CloudeoServiceEventDispatcher : CloudeoServiceListener
+    public class CloudeoServiceEventDispatcher : AddLiveServiceListener
     {
 
         #region Connection Lost handling

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CDO
+namespace ADL
 {
     public class VideoScalingFilter
     {
@@ -40,9 +40,9 @@ namespace CDO
         public VideoScalingFilter filter { get { return _filter; } set { _filter = value; } }
 
 
-        internal static CDORenderRequest toNative(RenderOptions options)
+        internal static ADLRenderRequest toNative(RenderOptions options)
         {
-            CDORenderRequest result = new CDORenderRequest();
+            ADLRenderRequest result = new ADLRenderRequest();
             result.sinkId = StringHelper.toNative(options.sinkId);
             result.mirror = options.mirror;
             result.filter = StringHelper.toNative(options.filter.StringValue);
@@ -67,9 +67,9 @@ namespace CDO
         public IntPtr hdc;
         
         
-        internal CDODrawRequest toNative()
+        internal ADLDrawRequest toNative()
         {
-            CDODrawRequest nReq = new CDODrawRequest();
+            ADLDrawRequest nReq = new ADLDrawRequest();
             nReq.bottom = bottom;
             nReq.top = top;
             nReq.left = left;

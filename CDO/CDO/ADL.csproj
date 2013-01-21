@@ -8,8 +8,8 @@
     <ProjectGuid>{AA919665-EFA2-4CB8-8106-63353D7C64BE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CDO</RootNamespace>
-    <AssemblyName>CDO</AssemblyName>
+    <RootNamespace>ADL</RootNamespace>
+    <AssemblyName>ADL</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -53,34 +53,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CloudeoService\CloudeoServiceImpl.cs" />
-    <Compile Include="CloudeoService\NativeServiceListenerAdapter.cs" />
-    <Compile Include="CloudeoService\rendering\ManualRenderer.cs" />
+    <Compile Include="AddLiveService\AddLiveServiceImpl.cs" />
+    <Compile Include="AddLiveService\NativeServiceListenerAdapter.cs" />
+    <Compile Include="AddLiveService\rendering\ManualRenderer.cs" />
     <Compile Include="Platform\ErrorCodes.cs" />
     <Compile Include="Platform\InitProgressChangedEvent.cs" />
     <Compile Include="Platform\InitStateChangedEvent.cs" />
     <Compile Include="Platform\PlatformInitOptions.cs" />
-    <Compile Include="CloudeoService\rendering\RenderingWidget.cs">
+    <Compile Include="AddLiveService\rendering\RenderingWidget.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CloudeoService\rendering\RenderSupport.cs" />
+    <Compile Include="AddLiveService\rendering\RenderSupport.cs" />
     <Compile Include="SdkWrapper\NativeSdkWrapper.cs" />
-    <Compile Include="CloudeoService\CloudeoService.cs" />
-    <Compile Include="CloudeoService\CloudeoServiceListener.cs" />
-    <Compile Include="CloudeoService\ConnectionDescription.cs" />
-    <Compile Include="CloudeoService\ConnectionType.cs" />
-    <Compile Include="CloudeoService\MediaPublishOptions.cs" />
-    <Compile Include="CloudeoService\MediaType.cs" />
+    <Compile Include="AddLiveService\AddLiveService.cs" />
+    <Compile Include="AddLiveService\AddLiveServiceListener.cs" />
+    <Compile Include="AddLiveService\ConnectionDescription.cs" />
+    <Compile Include="AddLiveService\ConnectionType.cs" />
+    <Compile Include="AddLiveService\MediaPublishOptions.cs" />
+    <Compile Include="AddLiveService\MediaType.cs" />
     <Compile Include="Platform\Platform.cs" />
     <Compile Include="Platform\PlatformInitListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CloudeoService\rendering\RenderOptions.cs" />
-    <Compile Include="CloudeoService\Responder.cs" />
-    <Compile Include="CloudeoService\ScreenCaptureSource.cs" />
+    <Compile Include="AddLiveService\rendering\RenderOptions.cs" />
+    <Compile Include="AddLiveService\Responder.cs" />
+    <Compile Include="AddLiveService\ScreenCaptureSource.cs" />
     <Compile Include="SdkWrapper\StringHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CloudeoService\rendering\RenderingWidget.resx">
+    <EmbeddedResource Include="AddLiveService\rendering\RenderingWidget.resx">
       <DependentUpon>RenderingWidget.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -89,16 +89,16 @@
     <PostBuildEvent>if $(ConfigurationName) == Release ( 
   rmdir $(ProjectDir)\dist /s /q
   mkdir $(ProjectDir)\dist
-  mkdir $(ProjectDir)\dist\cloudeo_sdk_C#
-  copy $(TargetDir)\$(TargetFileName) $(ProjectDir)\dist\cloudeo_sdk_C#
+  mkdir $(ProjectDir)\dist\adl_sdk_C#
+  copy $(TargetDir)\$(TargetFileName) $(ProjectDir)\dist\adl_sdk_C#
   del $(ProjectDir)\Doxygen
 
   copy $(ProjectDir)\Doxyfile.in $(ProjectDir)\Doxyfile
-  echo PROJECT_NUMBER = 1.17.0.0 &gt;&gt; $(ProjectDir)\Doxyfile
+  echo PROJECT_NUMBER = 1.19.0.0 &gt;&gt; $(ProjectDir)\Doxyfile
   echo OUTPUT_DIRECTORY = $(ProjectDir)dist\cloudeo_sdk_C#\apidocs &gt;&gt; $(ProjectDir)\Doxyfile
   echo INPUT = $(ProjectDir) &gt;&gt; $(ProjectDir)\Doxyfile
-  doxygen $(ProjectDir)\Doxyfile
-  "C:\Program Files (x86)\7-Zip\7z.exe" a -tzip $(ProjectDir)\dist\cloudeo_sdk_C#.zip      $(ProjectDir)\dist\cloudeo_sdk_C#
+  rem  doxygen $(ProjectDir)\Doxyfile
+  "C:\Program Files (x86)\7-Zip\7z.exe" a -tzip $(ProjectDir)\dist\adl_sdk_C#.zip      $(ProjectDir)\dist\adl_sdk_C#
 )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

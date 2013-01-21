@@ -8,8 +8,8 @@
     <ProjectGuid>{26F7BEE5-3956-45AB-BCB9-5FDA42536E21}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CDOTest</RootNamespace>
-    <AssemblyName>CDOTest</AssemblyName>
+    <RootNamespace>ADLTest</RootNamespace>
+    <AssemblyName>ADLTest</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -60,9 +61,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CDO\CDO.csproj">
+    <ProjectReference Include="..\CDO\ADL.csproj">
       <Project>{AA919665-EFA2-4CB8-8106-63353D7C64BE}</Project>
-      <Name>CDO</Name>
+      <Name>ADL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

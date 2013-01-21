@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CDO
+namespace ADL
 {
     public class MediaPublishOptions
     {
@@ -21,9 +21,9 @@ namespace CDO
         public int nativeWidth;
 
 
-        internal static CDOMediaPublishOptions toNative(MediaPublishOptions options)
+        internal static ADLMediaPublishOptions toNative(MediaPublishOptions options)
         {
-            CDOMediaPublishOptions result = new CDOMediaPublishOptions();
+            ADLMediaPublishOptions result = new ADLMediaPublishOptions();
             if (options != null)
             {
                 result.windowId = StringHelper.toNative(options.windowId);

@@ -77,9 +77,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CDO\CDO.csproj">
+    <ProjectReference Include="..\CDO\ADL.csproj">
       <Project>{AA919665-EFA2-4CB8-8106-63353D7C64BE}</Project>
-      <Name>CDO</Name>
+      <Name>ADL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

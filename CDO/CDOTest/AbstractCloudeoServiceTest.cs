@@ -11,8 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using CDO;
-namespace CDOTest
+using ADL;
+
+namespace ADLTest
 {
     public class AbstractCloudeoServiceTest
     {

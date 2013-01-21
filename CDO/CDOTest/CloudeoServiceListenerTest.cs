@@ -12,15 +12,15 @@ using System.Linq;
 using System.Text;
 
 using NUnit.Framework;
-using CDO;
+using ADL;
 
-namespace CDOTest
+namespace ADLTest
 {
     [TestFixture]
     class CloudeoServiceListenerTest: AbstractCloudeoServiceTest
     {
 
-        class MockEventListener:CloudeoServiceListenerAdapter
+        class MockEventListener:AddLiveServiceListenerAdapter
         {
 
             public EchoEvent receivedEvent;

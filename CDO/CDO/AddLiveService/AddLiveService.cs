@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CDO
+namespace ADL
 {
 
     /// <summary>
@@ -66,7 +66,7 @@ namespace CDO
         /// </param>
         /// <param name="listener">listener implementation to be set</param>
         void addServiceListener(Responder<Object> responder,
-                CloudeoServiceListener listener);
+                AddLiveServiceListener listener);
         
         #endregion
 

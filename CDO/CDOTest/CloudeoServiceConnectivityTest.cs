@@ -12,10 +12,10 @@ using System.Linq;
 using System.Text;
 
 using NUnit.Framework;
-using CDO;
+using ADL;
 using System.Threading;
 
-namespace CDOTest
+namespace ADLTest
 {
 
     [TestFixture]

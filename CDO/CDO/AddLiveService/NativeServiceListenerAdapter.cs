@@ -8,13 +8,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace CDO
+namespace ADL
 {
 
     class NativeServiceListenerAdapter
     {
 
-        private CloudeoServiceListener _listener;
+        private AddLiveServiceListener _listener;
 
         private on_video_frame_size_changed_clbck_t
                 _on_video_frame_size_changed_callback_t;
@@ -38,7 +38,7 @@ namespace CDO
         private on_echo_clbck_t
                 _on_echo_callback_t;
 
-        public NativeServiceListenerAdapter(CloudeoServiceListener listener)
+        public NativeServiceListenerAdapter(AddLiveServiceListener listener)
         {
             _listener = listener;
             _on_video_frame_size_changed_callback_t =
@@ -67,10 +67,10 @@ namespace CDO
             _on_echo_callback_t = new on_echo_clbck_t(on_echo_callback_t);
         }
 
-        public CDOServiceListener toNative()
+        public ADLServiceListener toNative()
         {
 
-            CDOServiceListener nListener = new CDOServiceListener();
+            ADLServiceListener nListener = new ADLServiceListener();
             nListener.opaque = IntPtr.Zero;
             nListener.onConnectionLost = _on_connection_lost_callback_t;
             nListener.onDeviceListChanged = _on_device_list_changed_callback_t;
@@ -93,7 +93,7 @@ namespace CDO
         // CDOServiceListener callback handlers
 
         private void on_video_frame_size_changed_callback_t(IntPtr opaque,
-            ref CDOVideoFrameSizeChangedEvent e)
+            ref ADLVideoFrameSizeChangedEvent e)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace CDO
         }
 
         private void on_connection_lost_callback_t(IntPtr opaque,
-            ref CDOConnectionLostEvent e)
+            ref ADLConnectionLostEvent e)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace CDO
         }
 
         private void on_user_event_callback_t(IntPtr opaque,
-            ref CDOUserStateChangedEvent e)
+            ref ADLUserStateChangedEvent e)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace CDO
         }
 
         private void on_media_stream_callback_t(IntPtr opaque,
-            ref CDOUserStateChangedEvent e)
+            ref ADLUserStateChangedEvent e)
         {
             try
             {
@@ -149,7 +149,7 @@ namespace CDO
         }
 
         private void on_mic_activity_callback_t(IntPtr opaque,
-            ref CDOMicActivityEvent e)
+            ref ADLMicActivityEvent e)
         {
             try
             {
@@ -163,7 +163,7 @@ namespace CDO
         }
 
         private void on_mic_gain_callback_t(IntPtr opaque,
-            ref CDOMicGainEvent e)
+            ref ADLMicGainEvent e)
         {
             try
             {
@@ -176,7 +176,7 @@ namespace CDO
         }
 
         private void on_device_list_changed_callback_t(IntPtr opaque,
-            ref CDODeviceListChangedEvent e)
+            ref ADLDeviceListChangedEvent e)
         {
             try
             {
@@ -190,7 +190,7 @@ namespace CDO
         }
 
         private void on_media_stats_callback_t(IntPtr opaque,
-            ref CDOMediaStatsEvent e)
+            ref ADLMediaStatsEvent e)
         {
             try
             {
@@ -205,7 +205,7 @@ namespace CDO
         }
 
         private void on_message_callback_t(IntPtr opaque,
-            ref CDOMessageEvent e)
+            ref ADLMessageEvent e)
         {
             try
             {
@@ -218,7 +218,7 @@ namespace CDO
         }
 
         private void on_media_conn_type_changed_callback_t(IntPtr opaque,
-            ref CDOMediaConnTypeChangedEvent e)
+            ref ADLMediaConnTypeChangedEvent e)
         {
             try
             {
@@ -232,7 +232,7 @@ namespace CDO
             }
         }
 
-        private void on_echo_callback_t(IntPtr opaque, ref CDOEchoEvent e)
+        private void on_echo_callback_t(IntPtr opaque, ref ADLEchoEvent e)
         {
             try
             {

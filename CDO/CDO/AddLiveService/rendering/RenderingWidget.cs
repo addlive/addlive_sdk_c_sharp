@@ -13,7 +13,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 
-namespace CDO
+namespace ADL
 {
    
     internal delegate void PreDisposeHandlerDelegate(int rendererId);

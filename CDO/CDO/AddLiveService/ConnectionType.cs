@@ -8,7 +8,7 @@
 
 using System;
 
-namespace CDO
+namespace ADL
 {
     public sealed class ConnectionType
     {

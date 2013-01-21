@@ -303,7 +303,7 @@ namespace ADL
         public virtual void onEchoEvent(EchoEvent e) { }
     }
 
-    public class CloudeoServiceEventDispatcher : AddLiveServiceListener
+    public class AddLiveServiceEventDispatcher : AddLiveServiceListener
     {
 
         #region Connection Lost handling

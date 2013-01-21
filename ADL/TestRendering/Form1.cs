@@ -33,7 +33,7 @@ namespace TestRendering
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Platform.init(new CDOPlatformReadyListener(this));
+            Platform.init(new ADLPlatformReadyListener(this));
         }
 
         private void startRenderBtn_Click(object sender, EventArgs e)
@@ -55,10 +55,10 @@ namespace TestRendering
 
         }
 
-        class CDOPlatformReadyListener : PlatformInitListener
+        class ADLPlatformReadyListener : PlatformInitListener
         {
 
-            public CDOPlatformReadyListener(Form1 form)
+            public ADLPlatformReadyListener(Form1 form)
             {
                 _form = form;
             }

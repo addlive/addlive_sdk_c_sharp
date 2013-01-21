@@ -28,7 +28,7 @@ namespace sample_app
         
         private bool _localVideoStarted;
 
-        private CloudeoServiceEventDispatcher _eDispatcher;
+        private AddLiveServiceEventDispatcher _eDispatcher;
         private static Random random = new Random((int)DateTime.Now.Ticks);
 
         private string connectedScopeId;
@@ -185,7 +185,7 @@ namespace sample_app
 
         private void initializeCDOEventListener()
         {
-            _eDispatcher = new CloudeoServiceEventDispatcher();
+            _eDispatcher = new AddLiveServiceEventDispatcher();
             _eDispatcher.UserEvent += onUserEvent;
             _eDispatcher.MediaConnTypeChanged += onMediaConnTypeChanged;
             _eDispatcher.MediaStream += onMediaStream;

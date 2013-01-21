@@ -61,7 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CDO\ADL.csproj">
+    <ProjectReference Include="..\ADL\ADL.csproj">
       <Project>{AA919665-EFA2-4CB8-8106-63353D7C64BE}</Project>
       <Name>ADL</Name>
     </ProjectReference>

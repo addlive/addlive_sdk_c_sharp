@@ -53,6 +53,8 @@ namespace sample_app
             this.versionLabel = new System.Windows.Forms.Label();
             this.logsSink = new System.Windows.Forms.RichTextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.publishAudioCheckBox = new System.Windows.Forms.CheckBox();
+            this.publishVideoCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,6 +85,8 @@ namespace sample_app
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.publishVideoCheckBox);
+            this.groupBox1.Controls.Add(this.publishAudioCheckBox);
             this.groupBox1.Controls.Add(this.disconnectBtn);
             this.groupBox1.Controls.Add(this.connectBtn);
             this.groupBox1.Controls.Add(this.label6);
@@ -102,7 +106,7 @@ namespace sample_app
             // 
             // disconnectBtn
             // 
-            this.disconnectBtn.Location = new System.Drawing.Point(135, 232);
+            this.disconnectBtn.Location = new System.Drawing.Point(135, 269);
             this.disconnectBtn.Name = "disconnectBtn";
             this.disconnectBtn.Size = new System.Drawing.Size(75, 23);
             this.disconnectBtn.TabIndex = 14;
@@ -112,7 +116,7 @@ namespace sample_app
             // 
             // connectBtn
             // 
-            this.connectBtn.Location = new System.Drawing.Point(54, 232);
+            this.connectBtn.Location = new System.Drawing.Point(54, 269);
             this.connectBtn.Name = "connectBtn";
             this.connectBtn.Size = new System.Drawing.Size(75, 23);
             this.connectBtn.TabIndex = 13;
@@ -123,7 +127,7 @@ namespace sample_app
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(9, 190);
+            this.label6.Location = new System.Drawing.Point(9, 227);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(50, 13);
             this.label6.TabIndex = 12;
@@ -131,7 +135,7 @@ namespace sample_app
             // 
             // scopeIdInput
             // 
-            this.scopeIdInput.Location = new System.Drawing.Point(9, 206);
+            this.scopeIdInput.Location = new System.Drawing.Point(9, 243);
             this.scopeIdInput.Name = "scopeIdInput";
             this.scopeIdInput.Size = new System.Drawing.Size(204, 20);
             this.scopeIdInput.TabIndex = 11;
@@ -222,6 +226,32 @@ namespace sample_app
             this.label5.TabIndex = 7;
             this.label5.Text = "Logs:";
             // 
+            // publishAudioCheckBox
+            // 
+            this.publishAudioCheckBox.AutoSize = true;
+            this.publishAudioCheckBox.Checked = true;
+            this.publishAudioCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.publishAudioCheckBox.Location = new System.Drawing.Point(12, 172);
+            this.publishAudioCheckBox.Name = "publishAudioCheckBox";
+            this.publishAudioCheckBox.Size = new System.Drawing.Size(88, 17);
+            this.publishAudioCheckBox.TabIndex = 15;
+            this.publishAudioCheckBox.Text = "publish audio";
+            this.publishAudioCheckBox.UseVisualStyleBackColor = true;
+            this.publishAudioCheckBox.CheckedChanged += new System.EventHandler(this.publishAudioCheckBox_CheckedChanged);
+            // 
+            // publishVideoCheckBox
+            // 
+            this.publishVideoCheckBox.AutoSize = true;
+            this.publishVideoCheckBox.Checked = true;
+            this.publishVideoCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.publishVideoCheckBox.Location = new System.Drawing.Point(12, 196);
+            this.publishVideoCheckBox.Name = "publishVideoCheckBox";
+            this.publishVideoCheckBox.Size = new System.Drawing.Size(88, 17);
+            this.publishVideoCheckBox.TabIndex = 16;
+            this.publishVideoCheckBox.Text = "publish video";
+            this.publishVideoCheckBox.UseVisualStyleBackColor = true;
+            this.publishVideoCheckBox.CheckedChanged += new System.EventHandler(this.publishVideoCheckBox_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -263,6 +293,8 @@ namespace sample_app
         private System.Windows.Forms.Button disconnectBtn;
         private System.Windows.Forms.RichTextBox logsSink;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckBox publishVideoCheckBox;
+        private System.Windows.Forms.CheckBox publishAudioCheckBox;
     }
 }
 

@@ -29,7 +29,7 @@ namespace ADLTest
         protected Dictionary<string, string> _devsResult;
         protected List<ScreenCaptureSource> _scrSourcesResult;
 
-        protected CloudeoServiceEventDispatcher dispatcher;
+        protected AddLiveServiceEventDispatcher dispatcher;
         private int _lastError;
         private string _lastErrMessage;
         private ManualRenderer _mRendererResult;
@@ -199,7 +199,7 @@ namespace ADLTest
             latch.Wait();
             Assert.AreEqual(InitStateChangedEvent.InitState.INITIALIZED, listener.initState, "Failed to initialize the platform due to: " + listener.errMsg);
             _service = Platform.getService();
-            dispatcher = new CloudeoServiceEventDispatcher();
+            dispatcher = new AddLiveServiceEventDispatcher();
             _service.addServiceListener(createVoidResponder(), dispatcher);
             awaitVoidResult("addServiceListener");
         }

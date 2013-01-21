@@ -790,7 +790,7 @@ namespace ADL
         {
             if (_platformHandle == IntPtr.Zero)
             {
-                responder.errHandler(ADl.ErrorCodes.Logic.INVALID_STATE, "Platform already disposed");
+                responder.errHandler(ADL.ErrorCodes.Logic.INVALID_STATE, "Platform already disposed");
                 return false;
             }
             return true;

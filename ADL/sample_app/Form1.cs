@@ -44,12 +44,12 @@ namespace sample_app
         {
             logD("Form loaded; Initializing Cloudeo platform");
             PlatformInitListenerDispatcher dispatcher = new PlatformInitListenerDispatcher();
-            dispatcher.StateChanged += onCDOInitStateChanged;
+            dispatcher.StateChanged += onADLInitStateChanged;
             _localVideoStarted = false;
             Platform.init(dispatcher);
         }
 
-        private void onCDOInitStateChanged(object sender, InitStateChangedEvent e)
+        private void onADLInitStateChanged(object sender, InitStateChangedEvent e)
         {
             if (e.state == InitStateChangedEvent.InitState.ERROR)
             {
@@ -67,12 +67,9 @@ namespace sample_app
             Platform.Service.getAudioOutputDeviceNames(
                 Platform.R<Dictionary<string, string>>(onAudioOutputDevices));
             Platform.Service.getVideoCaptureDeviceNames(
-                Platform.R<Dictionary<string, string>>(onVideoCaptureDevices));
-            
-            
+                Platform.R<Dictionary<string, string>>(onVideoCaptureDevices));  
         }
 
-        
         
         delegate void SetTextDelegate(Label label, string text);
         private void onVersion(string version)
@@ -150,8 +147,8 @@ namespace sample_app
             long userId = random.Next(1000);
             logD("Connecting to scope with id: " + scopeId);
             ConnectionDescription connDescr = new ConnectionDescription();
-            connDescr.autopublishAudio = true;
-            connDescr.autopublishVideo = true;
+            connDescr.autopublishAudio = publishAudioCheckBox.Checked;
+            connDescr.autopublishVideo = publishVideoCheckBox.Checked;
             connDescr.url = "174.127.76.179:443/" + scopeId;
             connDescr.token = userId.ToString();
             connDescr.lowVideoStream.maxBitRate = 64;
@@ -170,7 +167,6 @@ namespace sample_app
             connDescr.authDetails = genAuthDetails(scopeId, userId);
             connectedScopeId = scopeId;
             Platform.Service.connect(genGenericResponder<object>("connect"), connDescr);
-            
         }
 
         private void disconnectBtn_Click(object sender, EventArgs e)
@@ -181,7 +177,7 @@ namespace sample_app
 
         #endregion
 
-        #region CDO events processing
+        #region ADL events processing
 
         private void initializeCDOEventListener()
         {
@@ -367,6 +363,34 @@ namespace sample_app
         }
 
         #endregion
+
+        private void publishAudioCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (publishAudioCheckBox.Checked)
+            {
+                Platform.Service.publish(genGenericResponder<object>("publishAudio"), connectedScopeId,
+                    MediaType.AUDIO, null);
+            }
+            else
+            {
+                Platform.Service.unpublish(genGenericResponder<object>("unpublishAudio"), connectedScopeId,
+                    MediaType.AUDIO);
+            }
+        }
+
+        private void publishVideoCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (publishVideoCheckBox.Checked)
+            {
+                Platform.Service.publish(genGenericResponder<object>("publishVideo"), connectedScopeId,
+                    MediaType.VIDEO, null);
+            }
+            else
+            {
+                Platform.Service.unpublish(genGenericResponder<object>("unpublishVideo"), connectedScopeId,
+                        MediaType.VIDEO);
+            }
+        }
 
 
     }

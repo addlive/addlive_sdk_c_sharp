@@ -404,6 +404,11 @@ namespace ADL
          * Path to the Cloudeo Logic shared library.
          */
         public ADLString logicLibPath;
+
+        /**
+         * URL for runtime config.
+         */
+        public ADLString configUrl;
     }
 
 

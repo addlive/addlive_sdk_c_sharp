@@ -10,15 +10,17 @@ using System.Collections.Generic;
 
 namespace ADL
 {
-    public class ConnectionLostEvent :EventArgs
+    public class ConnectionLostEvent: EventArgs
     {
         private string _scopeId;
         private int _errCode;
         private string _errMessage;
+        private bool _willReconnect;
 
         public string ScopeId { get { return _scopeId; } }
         public int ErrCode { get { return _errCode; } }
         public string ErrMessage { get { return _errMessage; } }
+        public bool WillReconnect { get { return _willReconnect; } }
 
         internal static ConnectionLostEvent FromNative(
             ADLConnectionLostEvent connLostEvnt)
@@ -27,11 +29,27 @@ namespace ADL
             result._scopeId = connLostEvnt.scopeId.body;
             result._errCode = connLostEvnt.errCode;
             result._errMessage = connLostEvnt.errMessage.body;
+            result._willReconnect = connLostEvnt.willReconnect;
             return result;
         }
     }
 
-    public class DeviceListChangedEvent : EventArgs
+    public class SessionReconnectEvent : EventArgs
+    {
+        private string _scopeId;
+
+        public string ScopeId { get { return _scopeId; } }
+
+        internal static SessionReconnectEvent FromNative(
+            ADLSessionReconnectEvent connLostEvnt)
+        {
+            var result = new SessionReconnectEvent();
+            result._scopeId = connLostEvnt.scopeId.body;
+            return result;
+        }
+    }
+
+    public class DeviceListChangedEvent: EventArgs
 
     {
         private bool _audioIn;
@@ -105,7 +123,6 @@ namespace ADL
     }
 
     public class MediaStatsEvent : EventArgs
-
     {
         private string _scopeId;
         private MediaType _mediaType;
@@ -127,11 +144,24 @@ namespace ADL
             result._stats = new MediaStats(mediaStatsEvnt.stats);
             return result;
         }
+    }
 
+    public class SessionReconnectedEvent : EventArgs
+    {
+        private string _scopeId;
+
+        public string ScopeId { get { return _scopeId; } }
+
+        internal static SessionReconnectedEvent FromNative(
+            ADLSessionReconnectedEvent e)
+        {
+            var result = new SessionReconnectedEvent();
+            result._scopeId = e.scopeId.body;
+            return result;
+        }
     }
 
     public class MessageEvent : EventArgs
-
     {
         private long _srcUserId;
         private string _data;
@@ -252,21 +282,42 @@ namespace ADL
         }
     }
 
-    public class EchoEvent : EventArgs
-
+    public class MediaIssueEvent
     {
-        private string _echoValue;
+        public string ScopeId { get; private set; }
 
-        internal static EchoEvent FromNative(ADLEchoEvent nEvent)
+        public MediaType MediaType { get; private set; }
+
+        public bool IsStarted { get; private set; }
+
+        public String msg { get; private set; }
+
+        internal static MediaIssueEvent FromNative(
+            ADLMediaIssueEvent e)
         {
-            EchoEvent e = new EchoEvent();
-            e._echoValue = StringHelper.fromNative(nEvent.echoValue);
-            return e;
+            var result = new MediaIssueEvent();
+            result.ScopeId = e.scopeId.body;
+            result.MediaType = MediaType.FromString(e.mediaType.body);
+            result.IsStarted = e.isStarted;
+            result.msg = e.msg.body;
+            return result;
         }
+    }
 
-        public string echoValue { get { return _echoValue;  } }
+    public class MediaInterruptEvent
+    {
+        public MediaType MediaType { get; private set; }
 
+        public bool Interrupt { get; private set; }
 
+        internal static MediaInterruptEvent FromNative(
+            ADLMediaInterruptEvent e)
+        {
+            var result = new MediaInterruptEvent();
+            result.MediaType = MediaType.FromString(e.mediaType.body);
+            result.Interrupt = e.interrupt;
+            return result;
+        }
     }
 
     public interface AddLiveServiceListener
@@ -274,6 +325,7 @@ namespace ADL
         void onConnectionLost(ConnectionLostEvent e);
         void onDeviceListChanged(DeviceListChangedEvent e);
         void onMediaConnTypeChanged(MediaConnTypeChangedEvent e);
+        void onSessionReconnectedEvent(SessionReconnectedEvent e);
         void onMediaStats(MediaStatsEvent e);
         void onMediaStreamEvent(UserStateChangedEvent e);
         void onMessage(MessageEvent e);
@@ -281,7 +333,8 @@ namespace ADL
         void onMicGain(MicGainEvent e);
         void onUserEvent(UserStateChangedEvent e);
         void onVideoFrameSizeChanged(VideoFrameSizeChangedEvent e);
-        void onEchoEvent(EchoEvent e);
+        void onMediaInterruptEvent(MediaInterruptEvent e);
+        void onMediaIssueEvent(MediaIssueEvent e);
     }
 
 
@@ -300,7 +353,9 @@ namespace ADL
         public virtual void onVideoFrameSizeChanged(
             VideoFrameSizeChangedEvent e)
         { }
-        public virtual void onEchoEvent(EchoEvent e) { }
+        public virtual void onMediaIssueEvent(MediaIssueEvent e) { }
+        public virtual void onMediaInterruptEvent(MediaInterruptEvent e) { }
+        public virtual void onSessionReconnectedEvent(SessionReconnectedEvent e) { }
     }
 
     public class AddLiveServiceEventDispatcher : AddLiveServiceListener
@@ -458,7 +513,11 @@ namespace ADL
             if(VideoFrameSizeChanged != null)
                 VideoFrameSizeChanged(this, e);
         }
-        public virtual void onEchoEvent(EchoEvent e) { }
+        //public virtual void onEchoEvent(EchoEvent e) { }
+
+        public virtual void onMediaIssueEvent(MediaIssueEvent e) { }
+        public virtual void onMediaInterruptEvent(MediaInterruptEvent e) { }
+        public virtual void onSessionReconnectedEvent(SessionReconnectedEvent e) { }
     }
 
 }

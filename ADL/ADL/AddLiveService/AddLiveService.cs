@@ -428,19 +428,6 @@ namespace ADL
         /// </param>
         void startPlayingTestSound(Responder<Object> responder);
 
-        /// <summary>
-        /// 
-        /// 
-        /// #### Possible errors:
-        ///
-        /// __DEFAULT_ERROR (-1)__ If an unexpected, internal error occurs
-        /// </summary>
-        /// @since 1.17.0.0
-        /// <param name="responder">
-        /// Object that will receive the result of call.
-        /// </param>
-        void stopPlayingTestSound(Responder<Object> responder);
-
         #endregion
         
         #region Stats management
@@ -506,13 +493,6 @@ namespace ADL
         /// </param>
         /// <param name="options"></param>
         void manualRenderSink(Responder<ManualRenderer> responder, RenderOptions options);
-        
-        /// @private
-        /// <param name="responder">
-        /// Object that will receive the result of call.
-        /// </param>
-        /// <param name="content"></param>
-        void sendEchoNotification(Responder<Object> responder, string content);
 
     }
 }

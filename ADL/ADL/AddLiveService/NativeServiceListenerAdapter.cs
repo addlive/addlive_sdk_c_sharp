@@ -35,8 +35,13 @@ namespace ADL
         private on_message_clbck_t _on_message_callback_t;
         private on_media_conn_type_changed_clbck_t
                 _on_media_conn_type_changed_callback_t;
-        private on_echo_clbck_t
-                _on_echo_callback_t;
+        private on_media_interrupt_clbck_t
+                _on_media_interrupt_callback_t;
+        private on_media_issue_clbck_t
+                _on_media_issue_callback_t;
+        private on_session_reconnected_clbck_t
+                _on_session_reconnected_callback_t;
+
 
         public NativeServiceListenerAdapter(AddLiveServiceListener listener)
         {
@@ -64,7 +69,9 @@ namespace ADL
             _on_media_conn_type_changed_callback_t =
                 new on_media_conn_type_changed_clbck_t(
                     on_media_conn_type_changed_callback_t);
-            _on_echo_callback_t = new on_echo_clbck_t(on_echo_callback_t);
+            _on_media_interrupt_callback_t = new on_media_interrupt_clbck_t(on_media_interrupt_callback_t);
+            _on_media_issue_callback_t = new on_media_issue_clbck_t(on_media_issue_callback_t);
+            _on_session_reconnected_callback_t = new on_session_reconnected_clbck_t(on_session_reconnected_callback_t);
         }
 
         public ADLServiceListener toNative()
@@ -74,7 +81,7 @@ namespace ADL
             nListener.opaque = IntPtr.Zero;
             nListener.onConnectionLost = _on_connection_lost_callback_t;
             nListener.onDeviceListChanged = _on_device_list_changed_callback_t;
-            nListener.onEcho = _on_echo_callback_t;
+            nListener.onSessionReconnected = _on_session_reconnected_callback_t;
             nListener.onMediaConnTypeChanged =
                 _on_media_conn_type_changed_callback_t;
             nListener.onMediaStats = _on_media_stats_callback_t;
@@ -85,6 +92,10 @@ namespace ADL
             nListener.onUserEvent = _on_user_event_callback_t;
             nListener.onVideoFrameSizeChanged =
                 _on_video_frame_size_changed_callback_t;
+            nListener.onMediaIssue =
+                _on_media_issue_callback_t;
+            nListener.onMediaInterrupt =
+                _on_media_interrupt_callback_t;
             return nListener;
 
         }
@@ -232,17 +243,40 @@ namespace ADL
             }
         }
 
-        private void on_echo_callback_t(IntPtr opaque, ref ADLEchoEvent e)
+        private void on_media_interrupt_callback_t(IntPtr opaque, ref ADLMediaInterruptEvent e)
         {
             try
             {
                 if (_listener != null)
-                    _listener.onEchoEvent(EchoEvent.FromNative(e));
+                    _listener.onMediaInterruptEvent(MediaInterruptEvent.FromNative(e));
             }
             catch (Exception )
             {
             }
+        }
 
+        private void on_media_issue_callback_t(IntPtr opaque, ref ADLMediaIssueEvent e)
+        {
+            try
+            {
+                if (_listener != null)
+                    _listener.onMediaIssueEvent(MediaIssueEvent.FromNative(e));
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void on_session_reconnected_callback_t(IntPtr opaque, ref ADLSessionReconnectedEvent e)
+        {
+            try
+            {
+                if (_listener != null)
+                    _listener.onSessionReconnectedEvent(SessionReconnectedEvent.FromNative(e));
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

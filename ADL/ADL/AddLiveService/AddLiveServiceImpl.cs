@@ -364,13 +364,13 @@ namespace ADL
             if (!isPlatformInitialized<object>(responder))
                 return;
 
-            ADLString connDescriptorString =
-                StringHelper.toNative(connDescription.toJSON());
-            NativeAPI.adl_connect_string(
+            var cdn = connDescription.toNative();
+
+            NativeAPI.adl_connect(
                 _voidRCallback,
                 _platformHandle,
                 saveResponder(responder),
-                ref connDescriptorString);
+                ref cdn);
         }
 
         // =====================================================================
@@ -532,17 +532,6 @@ namespace ADL
                 saveResponder(responder));
         }
 
-        /// <inheritdoc />
-        public void stopPlayingTestSound(Responder<object> responder)
-        {
-            if (!isPlatformInitialized<object>(responder))
-                return;
-
-            NativeAPI.adl_stop_playing_test_sound(
-                _voidRCallback, _platformHandle,
-                saveResponder(responder));
-        }
-
         #endregion
 
 
@@ -570,15 +559,6 @@ namespace ADL
 
         #endregion
 
-        /// <inheritdoc />
-        public void sendEchoNotification(Responder<object> responder,
-                                         string content)
-        {
-            ADLString cont = StringHelper.toNative(content);
-            NativeAPI.adl_send_echo_notification(
-                _voidRCallback, _platformHandle,
-                saveResponder(responder), ref cont);
-        }
 
         #region Private helpers
         /**

@@ -59,6 +59,49 @@ namespace ADL
         public ADLString err_message;
     }
 
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    struct ADLConnectionDescription
+    {
+        public ADLString url;
+
+        public ADLString scopeId;
+
+        [MarshalAs(UnmanagedType.U1)]
+        public bool autopublishVideo;
+
+        [MarshalAs(UnmanagedType.U1)]
+        public bool autopublishAudio;
+
+        public ADLVideoStreamDescriptor videoStream;
+
+        public ADLAuthDetails authDetails;
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    struct ADLVideoStreamDescriptor
+    {
+        public UInt32 maxWidth;
+
+        public UInt32 maxHeight;
+
+        public UInt32 maxFps;
+
+        [MarshalAs(UnmanagedType.U1)]
+        public bool useAdaptation;
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    struct ADLAuthDetails
+    {
+        public Int64 userId;
+
+        public Int64 expires;
+
+        public ADLString salt;
+
+        public ADLString signature;
+    }
+
 
     /**
      * Device description used by the Cloudeo platform.
@@ -216,7 +259,16 @@ namespace ADL
         public ADLString scopeId;
         public int errCode;
         public ADLString errMessage;
-    } ;
+
+        [MarshalAs(UnmanagedType.U1)]
+        public bool willReconnect;
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    struct ADLSessionReconnectEvent
+    {
+        public ADLString scopeId;
+    }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     struct ADLUserStateChangedEvent
@@ -311,9 +363,31 @@ namespace ADL
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    struct ADLEchoEvent
+    struct ADLSessionReconnectedEvent
     {
-        public ADLString echoValue;
+        public ADLString scopeId;
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    struct ADLMediaIssueEvent
+    {
+        public ADLString scopeId;
+
+        public ADLString mediaType;
+
+        [MarshalAs(UnmanagedType.U1)]
+        public bool isStarted;
+
+        public ADLString msg;
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    struct ADLMediaInterruptEvent
+    {
+        public ADLString mediaType;
+
+        [MarshalAs(UnmanagedType.U1)]
+        public bool interrupt;
     }
 
 
@@ -358,7 +432,17 @@ namespace ADL
         ref ADLMediaConnTypeChangedEvent e);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void on_echo_clbck_t(IntPtr opaque, ref ADLEchoEvent e);
+    delegate void on_session_reconnected_clbck_t(IntPtr opaque,
+        ref ADLSessionReconnectedEvent e);
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    delegate void on_media_issue_clbck_t(IntPtr opaque,
+        ref ADLMediaIssueEvent e);
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    delegate void on_media_interrupt_clbck_t(IntPtr opaque,
+        ref ADLMediaInterruptEvent e);
+
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     struct ADLServiceListener
@@ -366,26 +450,42 @@ namespace ADL
         public IntPtr opaque;
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public on_video_frame_size_changed_clbck_t onVideoFrameSizeChanged;
+
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public on_connection_lost_clbck_t onConnectionLost;
+
+        [MarshalAs(UnmanagedType.FunctionPtr)]
+        public on_session_reconnected_clbck_t onSessionReconnected;
+
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public on_user_event_clbck_t onUserEvent;
+
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public on_media_stream_clbck_t onMediaStreamEvent;
+
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public on_mic_activity_clbck_t onMicActivity;
+
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public on_mic_gain_clbck_t onMicGain;
+
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public on_device_list_changed_clbck_t onDeviceListChanged;
+
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public on_media_stats_clbck_t onMediaStats;
+
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public on_message_clbck_t onMessage;
+
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public on_media_conn_type_changed_clbck_t onMediaConnTypeChanged;
+
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public on_echo_clbck_t onEcho;
+        public on_media_issue_clbck_t onMediaIssue;
+
+        [MarshalAs(UnmanagedType.FunctionPtr)]
+        public on_media_interrupt_clbck_t onMediaInterrupt;
     }
 
     /**
@@ -404,6 +504,8 @@ namespace ADL
          * Path to the Cloudeo Logic shared library.
          */
         public ADLString logicLibPath;
+        public ADLString configUrl;
+        public ADLString streamerEndpointResolver;
     }
 
 
@@ -464,7 +566,7 @@ namespace ADL
             IntPtr opaque);
 
         [DllImport("adl_sdk.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void adl_release_platform(ADLH handle);
+        public static extern int adl_release_platform(ADLH handle);
 
         /**
          * =============================================================================
@@ -497,10 +599,6 @@ namespace ADL
             adl_void_rclbck_t resultHandler, ADLH handle, IntPtr opaque,
             ref ADLServiceListener listener);
 
-        [DllImport("adl_sdk.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void adl_send_echo_notification(
-            adl_void_rclbck_t resultHandler, ADLH handle, IntPtr opaque,
-            ref ADLString content);
 
         //=====================================================================
         //=============== Video devices dealing ===============================
@@ -683,8 +781,8 @@ namespace ADL
          * @param connDescr
          */
         [DllImport("adl_sdk.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void adl_connect_string(adl_void_rclbck_t rclbck,
-            ADLH handle, IntPtr opaque, ref ADLString connDescr);
+        public static extern void adl_connect(adl_void_rclbck_t rclbck,
+            ADLH handle, IntPtr opaque, ref ADLConnectionDescription connDescr);
 
         /**
          *

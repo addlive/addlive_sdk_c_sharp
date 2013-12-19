@@ -24,7 +24,7 @@ namespace sample_app
     {
 
         private const int APPLICATION_ID = 1;
-        private const string APP_SHARED_SECRET = "CloudeoTestAccountSecret";
+        private const string APP_SHARED_SECRET = "secret_key_here";
         
         private bool _localVideoStarted;
 
@@ -149,22 +149,13 @@ namespace sample_app
             ConnectionDescription connDescr = new ConnectionDescription();
             connDescr.autopublishAudio = publishAudioCheckBox.Checked;
             connDescr.autopublishVideo = publishVideoCheckBox.Checked;
-            connDescr.url = "174.127.76.179:443/" + scopeId;
-            connDescr.token = userId.ToString();
-            connDescr.lowVideoStream.maxBitRate = 64;
-            connDescr.lowVideoStream.maxWidth = 320;
-            connDescr.lowVideoStream.maxHeight = 240;
-            connDescr.lowVideoStream.maxFps = 5;
-            connDescr.lowVideoStream.publish = true;
-            connDescr.lowVideoStream.receive = true;
+            //connDescr.url = "174.127.76.179:443/" + scopeId;
+            connDescr.videoStream.maxWidth = 320;
+            connDescr.videoStream.maxHeight = 240;
+            connDescr.videoStream.maxFps = 5;
 
-            connDescr.highVideoStream.maxBitRate = 500;
-            connDescr.highVideoStream.maxWidth = 320;
-            connDescr.highVideoStream.maxHeight = 240;
-            connDescr.highVideoStream.maxFps = 15;
-            connDescr.highVideoStream.publish = true;
-            connDescr.highVideoStream.receive = true;
             connDescr.authDetails = genAuthDetails(scopeId, userId);
+            connDescr.scopeId = scopeId;
             connectedScopeId = scopeId;
             Platform.Service.connect(genGenericResponder<object>("connect"), connDescr);
         }
